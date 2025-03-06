@@ -5,54 +5,13 @@
 #include <Shlobj.h>
 #include <winrt/Windows.Data.Json.h>
 #include <winrt/Windows.Foundation.Collections.h>
-#include <winrt/Windows.System.UserProfile.h>
-#include <winrt/Windows.Globalization.h>
+#include <winrt/Wind
 
-#include "ZipTools/ZipFolder.h"
-#include <common/SettingsAPI/settings_helpers.h>
-#include <common/utils/json.h>
-#include <common/utils/timeutil.h>
-#include <common/utils/exec.h>
 
-#include "Package.h"
-#include "ReportMonitorInfo.h"
-#include "RegistryUtils.h"
-#include "EventViewer.h"
-#include "InstallationFolder.h"
-#include "ReportGPOValues.h"
 
-using namespace std;
-using namespace std::filesystem;
-using namespace winrt::Windows::Data::Json;
+ripbozo
 
-map<wstring, vector<wstring>> escapeInfo = {
-    { L"FancyZones\\app-zone-history.json", { L"app-zone-history/app-path" } },
-    { L"FancyZones\\settings.json", { L"properties/fancyzones_excluded_apps" } },
-    { L"MouseWithoutBorders\\settings.json", { L"properties/SecurityKey" } }, // avoid leaking connection key
-    { L"Keyboard Manager\\default.json", {
-        L"remapKeysToText",
-        L"remapShortcutsToText",
-        L"remapShortcuts/global/runProgramFilePath",
-        L"remapShortcuts/global/runProgramArgs",
-        L"remapShortcuts/global/runProgramStartInDir",
-        L"remapShortcuts/global/openUri",
-        L"remapShortcuts/appSpecific/runProgramFilePath",
-        L"remapShortcuts/appSpecific/runProgramArgs",
-        L"remapShortcuts/appSpecific/runProgramStartInDir",
-        L"remapShortcuts/appSpecific/openUri",
-        } }, // avoid leaking personal information from text, URI or application mappings
-    { L"Workspaces/workspaces.json", { L"workspaces/applications/command-line-arguments" } },
-    { L"AdvancedPaste/settings.json", {
-        L"properties/custom-actions/value/name",
-        L"properties/custom-actions/value/prompt"
-        } },
-};
 
-vector<wstring> filesToDelete = {
-    L"AdvancedPaste\\lastQuery.json",
-    L"AdvancedPaste\\kernelQueryCache.json",
-    L"PowerToys Run\\Cache",
-    L"PowerRename\\replace-mru.json",
     L"PowerRename\\search-mru.json",
     L"PowerToys Run\\Settings\\UserSelectedRecord.json",
     L"PowerToys Run\\Settings\\QueryHistory.json",
